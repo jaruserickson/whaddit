@@ -1,40 +1,52 @@
 from clarifai import rest
 from clarifai.rest import ClarifaiApp
 from bs4 import BeautifulSoup
-import urllib, praw
+import requests, json, urllib
 
 MODEL_LINKS = []
-CLARIFAI_APP_ID = "APP_ID_HERE"
-CLARIFAI_APP_SECRET = "APP_SECRET_HERE" #hidden!
-REDDIT_CL_ID = "CL_ID_HERE"
-REDDIT_CL_SECRET = "CL_SECRET_HERE" #hidden!
+CLARIFAI_APP_ID = "YOUR_ID"
+CLARIFAI_APP_SECRET = "YOUR_SECRET" #hidden!
 
-app = ClarifaiApp(CLARIFAI_APP_ID, CLARIFAI_APP_SECRET)
+def subExists(sub):
+	#check the json
+	resp = requests.get("http://reddit.com/r/" + sub + ".json", headers={'User-agent' : 'recommeddit py3'})
+	data = json.loads(resp.text)
+	#data children will be empty on an invalid sub
+	if (data["data"]["children"] == []):
+		return False
+	else:
+		return True
 
-subreddit = input("please input a subreddit: ")
-s = urllib.request.urlopen("http://imgur.com/r/%s" % (subreddit)).read()
-soup = BeautifulSoup(s, "html.parser")
+if __name__ == "__main__":
+	app = ClarifaiApp(CLARIFAI_APP_ID, CLARIFAI_APP_SECRET)
 
-for link in soup.find_all("img"):
-	src = link.get("src")[2:len(link.get("src"))]
-	if "i.imgur.com" in src:
-		#need to remove the thumbnail letter imgur adds to its links to get HD
-		MODEL_LINKS.append(src[0:len(src)-5] + src[len(src)-4:len(src)])
+	#verify subreddit input is valid
+	flag = False
+	while not flag:
+		subreddit = input("please input a subreddit: ")
+		flag = subExists(subreddit)
+		if not flag:
+			print("that subreddit doesn't exist!")
 
-#model = app.models.get("general-v1.3")
-#output = model.predict_by_url(url='https://samples.clarifai.com/metro-north.jpg')
+	#get top X images from subreddit via bs4
+	response = urllib.request.urlopen("http://imgur.com/r/%s" % (subreddit)).read()
+	soup = BeautifulSoup(response, "html.parser")
 
-#predictions = output["outputs"][0]["data"]["concepts"]
-#for prediction in predictions:
-	#print(prediction["name"], '{0:.4g}'.format(prediction["value"]*100))
+	for link in soup.find_all("img"):
+		src = link.get("src")[2:len(link.get("src"))]
+		if "i.imgur.com" in src:
+			#need to remove the thumbnail letter imgur adds to its links to get HD
+			MODEL_LINKS.append(src[0:len(src)-5] + src[len(src)-4:len(src)])
 
-r = praw.Reddit(user_agent='python3:github/jaruserickson:v0.1 (by /u/levelprime)')
-r.set_oauth_app_info(client_id=REDDIT_CL_ID,
-                      client_secret=REDDIT_CL_SECRET,
-                      redirect_uri='http://github.com/jaruserickson/recomeddit'
-                                   'authorize_callback')
-print(r.get_subreddit(subreddit, fetch=True))
-print("0-----0")
+	#predict with clarifai api what the images are most commonly
+	#model = app.models.get("general-v1.3")
+	#output = model.predict_by_url(url='https://samples.clarifai.com/metro-north.jpg')
 
-print(MODEL_LINKS)
-print("Complete.")
+	#predictions = output["outputs"][0]["data"]["concepts"]
+	#for prediction in predictions:
+		#print(prediction["name"], '{0:.4g}'.format(prediction["value"]*100))
+
+	#print reccomendations
+
+	print(MODEL_LINKS)
+	print("Complete.")
