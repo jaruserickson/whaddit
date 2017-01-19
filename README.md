@@ -19,4 +19,17 @@ https://www.clarifai.com/
 
 Then simply input your favourite subreddit and clarifai will guess what the subreddit is about, and try to predict its /r/ url!
 
+Here's a common output! :smiley:
+
+```
+py init.py
+Please input a subreddit: dogs
+Validating subreddit...
+Scraping subreddit...
+Getting data from clarifai... (this may take a minute)
+Getting most common trends...
+I think your subreddit is about dog (97.755847%) or maybe mammal (95.322234%) or portrait (93.955130%).
+Complete.
+```
+
 *created with :purple_heart: on a thursday in January*
