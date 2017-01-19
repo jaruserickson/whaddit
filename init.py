@@ -93,10 +93,10 @@ if __name__ == "__main__":
 	sortedWeights = sorted(top.items(), key=lambda x:x[1])
 
 	print("I think your subreddit is about %s (%f%%) or maybe %s (%f%%) or %s (%f%%)." % (sortedWeights[2][0],
-																							sortedWeights[2][1],
-																							sortedWeights[1][0],
-																							sortedWeights[1][1],
-																							sortedWeights[0][0],
-																							sortedWeights[0][1]))
+		sortedWeights[2][1],
+		sortedWeights[1][0],
+		sortedWeights[1][1],
+		sortedWeights[0][0],
+		sortedWeights[0][1]))
 
 	print("Complete.")
