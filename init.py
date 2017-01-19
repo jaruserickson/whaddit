@@ -11,7 +11,7 @@ def subExists(sub):
 	#(str) -> bool
 	#checks if a subreddit exists, based on its json
 	print("Validating subreddit...")
-	resp = requests.get("http://reddit.com/r/" + sub + ".json", headers={'User-agent' : 'whaddit:python3:v0.9 (by /u/levelprime)'})
+	resp = requests.get("http://reddit.com/r/" + sub + ".json", headers={'User-agent' : 'whaddit:python3:v1.0 (by /u/levelprime)'})
 	data = json.loads(resp.text)
 	#data children will be empty on an invalid sub
 	if (data["data"]["children"] == []):
@@ -23,18 +23,26 @@ def mostCommon(preds):
 	#(list of lists of str,double) -> dict(str, double)
 	#catered function to find most commonly found values in predicitons 2d list
 	print("Getting most common trends...")
-	common = {}
+	common, commonAvg = {}, {}
 	for prediction in predictions:
 		if prediction[0] not in list(common.keys()):
 			common[prediction[0]] = [prediction[1]]
 		else:
 			common[prediction[0]].append(prediction[1])
-	#now calculate the average for prediction values and set the key to that
+	#now calculate the average for prediction values and set the key to that (weighted by occurrence)
 	for key in list(common.keys()):
-		common[key] = float(sum(common[key]))/float(len(common[key]))
+		avg = (float(sum(common[key]))/float(len(common[key])))
+		length = int(len(common[key]))
+		common[key] = avg*length
+		commonAvg[key] = avg
+	return (common, commonAvg)
 
-	return common
-
+def addGuess(guess, prob, dict):
+	#filter out the weird "no person" guess clarifai has
+	if guess != "no person":
+		dict[guess] = prob
+		return True
+	return False
 
 if __name__ == "__main__":
 	app = ClarifaiApp(CLARIFAI_APP_ID, CLARIFAI_APP_SECRET)
@@ -48,6 +56,7 @@ if __name__ == "__main__":
 			print("That subreddit doesn't exist!")
 
 	#get top X images from subreddit via bs4
+	print("Scraping subreddit...")
 	response = urllib.request.urlopen("http://imgur.com/r/%s" % (subreddit)).read()
 	soup = BeautifulSoup(response, "html.parser")
 
@@ -72,7 +81,20 @@ if __name__ == "__main__":
 	common = mostCommon(predictions)
 
 	#get sorted tuple
-	commonTuple = sorted(common.items(), key=lambda x:x[1])
-	print(commonTuple)
+	commonTuple = sorted(common[0].items(), key=lambda x:x[1])
+	top = {}
+	
+	for i in range(3):
+		if not addGuess(commonTuple[len(commonTuple)-(i+1)][0], common[1][commonTuple[len(commonTuple)-(i+1)][0]]*100, top):
+			addGuess(commonTuple[len(commonTuple)-4][0], common[1][commonTuple[len(commonTuple)-4][0]]*100, top)
+
+	sortedWeights = sorted(top.items(), key=lambda x:x[1])
+
+	print("I think your subreddit is about %s (%f%%) or maybe %s (%f%%) or %s (%f%%)." % (sortedWeights[2][0],
+																							sortedWeights[2][1],
+																							sortedWeights[1][0],
+																							sortedWeights[1][1],
+																							sortedWeights[0][0],
+																							sortedWeights[0][1]))
 
 	print("Complete.")
