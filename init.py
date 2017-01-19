@@ -11,7 +11,7 @@ def subExists(sub):
 	#(str) -> bool
 	#checks if a subreddit exists, based on its json
 	print("Validating subreddit...")
-	resp = requests.get("http://reddit.com/r/" + sub + ".json", headers={'User-agent' : 'recommeddit:python3:v0.02 (by /u/levelprime)'})
+	resp = requests.get("http://reddit.com/r/" + sub + ".json", headers={'User-agent' : 'whaddit:python3:v0.9 (by /u/levelprime)'})
 	data = json.loads(resp.text)
 	#data children will be empty on an invalid sub
 	if (data["data"]["children"] == []):
@@ -42,10 +42,10 @@ if __name__ == "__main__":
 	#verify subreddit input is valid
 	flag = False
 	while not flag:
-		subreddit = input("please input a subreddit: ")
+		subreddit = input("Please input a subreddit: ")
 		flag = subExists(subreddit)
 		if not flag:
-			print("that subreddit doesn't exist!")
+			print("That subreddit doesn't exist!")
 
 	#get top X images from subreddit via bs4
 	response = urllib.request.urlopen("http://imgur.com/r/%s" % (subreddit)).read()

@@ -1,9 +1,9 @@
-# recommenddit
+# whaddit
 
-get recommendations on subreddits you may like based on a subreddit you like
+let ai guess what a subreddit is about!
 
 ## Usage
-To use recommenddit, you'll need a few python libraries first (and an API key!)
+To use whaddit, you'll need a few python libraries first (and an API key!)
 
 ```
 pip3 install clarifai
@@ -16,5 +16,7 @@ After installing the 3 libraries above, you'll need an api key for clarifai sinc
 ```
 https://www.clarifai.com/
 ```
+
+Then simply input your favourite subreddit and clarifai will guess what the subreddit is about, and try to predict its /r/ url!
 
 *created with :purple_heart: on a thursday in January*
