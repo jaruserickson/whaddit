@@ -18,4 +18,4 @@ https://www.reddit.com/prefs/apps
 https://www.clarifai.com/
 ```
 
-*created with :purple_heart: on a wednesday in January*
+*created with :purple_heart: on a thursday in January*
