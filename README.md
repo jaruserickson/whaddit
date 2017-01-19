@@ -1,7 +1,8 @@
 # whaddit
-![logo](https://github.com/jaruserickson/whaddit/blob/master/img/whaddit.png?raw=true "logo!")
-
-let ai guess what a subreddit is about!
+<p align="center">
+  <img src="https://github.com/jaruserickson/whaddit/blob/master/img/whaddit.png?raw=true"/>
+  <br> Let AI guess what your favourite subreddit is all about!
+</p>
 
 ## Usage
 To use whaddit, you'll need a few python libraries first (and an API key!)
