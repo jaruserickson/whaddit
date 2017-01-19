@@ -1,4 +1,5 @@
 # whaddit
+![logo](https://github.com/jaruserickson/whaddit/blob/master/img/whaddit.png?raw=true "logo!")
 
 let ai guess what a subreddit is about!
 
