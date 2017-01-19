@@ -4,8 +4,8 @@ from bs4 import BeautifulSoup
 import requests, json, urllib
 
 MODEL_LINKS = []
-CLARIFAI_APP_ID = "YOUR_ID"
-CLARIFAI_APP_SECRET = "YOUR_SECRET" #hidden!
+CLARIFAI_APP_ID = "YOUR_ID_HERE"
+CLARIFAI_APP_SECRET = "YOUR_SECRET_HERE" #hidden!
 
 def subExists(sub):
 	#(str) -> bool
@@ -20,8 +20,9 @@ def subExists(sub):
 		return True
 
 def mostCommon(preds):
-	#(list of lists of str,double) -> dict(str, double)
+	#(list of lists of str,double) -> tuple(dict(str, double), dict(str, double))
 	#catered function to find most commonly found values in predicitons 2d list
+	#common is used for weighting, commonAvg is for the percent clarifai matches what's in each photo.
 	print("Getting most common trends...")
 	common, commonAvg = {}, {}
 	for prediction in predictions:
@@ -84,6 +85,7 @@ if __name__ == "__main__":
 	commonTuple = sorted(common[0].items(), key=lambda x:x[1])
 	top = {}
 	
+	#sorting top 3 data points, using function above to filter weird guesses
 	for i in range(3):
 		if not addGuess(commonTuple[len(commonTuple)-(i+1)][0], common[1][commonTuple[len(commonTuple)-(i+1)][0]]*100, top):
 			addGuess(commonTuple[len(commonTuple)-4][0], common[1][commonTuple[len(commonTuple)-4][0]]*100, top)
