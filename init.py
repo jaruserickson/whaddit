@@ -9,7 +9,7 @@ CLARIFAI_APP_SECRET = "YOUR_SECRET" #hidden!
 
 def subExists(sub):
 	#check the json
-	resp = requests.get("http://reddit.com/r/" + sub + ".json", headers={'User-agent' : 'recommeddit py3'})
+	resp = requests.get("http://reddit.com/r/" + sub + ".json", headers={'User-agent' : 'recommeddit:python3:v0.02 (by /u/levelprime)'})
 	data = json.loads(resp.text)
 	#data children will be empty on an invalid sub
 	if (data["data"]["children"] == []):
