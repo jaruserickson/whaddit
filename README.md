@@ -1,9 +1,9 @@
-# recommeddit
+# recommenddit
 
 get recommendations on subreddits you may like based on a subreddit you like
 
 ## Usage
-To use recommeddit, you'll need a few python libraries first (and an API key!)
+To use recommenddit, you'll need a few python libraries first (and an API key!)
 
 ```
 pip3 install clarifai
