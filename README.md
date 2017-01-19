@@ -22,7 +22,9 @@ Then simply input your favourite subreddit and clarifai will guess what the subr
 Here's a common output! :smiley:
 
 ```
-py init.py
+python3 init.py
+```
+```
 Please input a subreddit: dogs
 Validating subreddit...
 Scraping subreddit...
