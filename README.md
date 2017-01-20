@@ -36,4 +36,16 @@ I think your subreddit is about dog (97.755847%) or maybe mammal (95.322234%) or
 Complete.
 ```
 
+## Logic
+whaddit is a combination of multiple python libraries and some basic data analysis. 
+
+whaddit works as follows:
+
+1. Verify the subreddit a user inputs is valid with Requests and JSON
+2. Using BeautifulSoup4, whaddit scrapes the imgur/r/sub the user specifies and gets urls to the 50 hottest photos from the subreddit
+3. Clarifai will then analyze all the photos and predict what is in each photo, feeding results into a large dictionary
+4. whaddit orders the predictions based on percentage and occurrence
+
+That's all there is to it!
+
 *created with :purple_heart: on a thursday in January*
